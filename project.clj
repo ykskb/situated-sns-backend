@@ -21,10 +21,11 @@
                  [threatgrid/ring-graphql-ui "0.1.3"]
                  ;; ---- deps for phrag ----
                  [org.clojure/java.jdbc "0.7.12"]
+                 [hikari-cp "2.14.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [com.github.seancorfield/honeysql "2.0.0-rc3"]
                  [com.walmartlabs/lacinia "0.39-alpha-9"]
-                 [ring/ring-core "1.9.3"]
+                 [ring/ring-core "1.9.5"]
                  [environ "1.2.0"]
                  [camel-snake-kebab "0.4.2"]
                  [inflections "0.13.2"]
@@ -39,7 +40,7 @@
   :profiles
   {:dev  [:project/dev :profiles/dev]
    :repl {:repl-options {:init-ns user}}
-   :profiles/dev {:env {:service-host "http://localhost"
+   :profiles/dev {:env {:service-host ""
                         :service-port "3000"
                         :resource-dir ""
                         :firebase-project-id ""

@@ -5,9 +5,9 @@
     </encoder>
   </appender>
 
-  <logger name="phrag" level="INFO"/>
+  <logger name="phrag" level="WARN"/>
 
-  <root level="INFO">
+  <root level="WARN">
     <appender-ref ref="MAIN"/>
   </root>
 </configuration>
