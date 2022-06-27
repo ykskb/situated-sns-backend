@@ -1,8 +1,7 @@
 (ns situated-sns.handler
   (:require [clojure.java.io :as io]
             [environ.core :refer [env]]
-            [phrag.db :as phrag-db]
-            [phrag.handler :as phrag-hdlr]
+            [situated-sns.db :as d]
             [situated-sns.middleware :as mid]))
 
 (defn- file-extension [s]
@@ -20,16 +19,16 @@
       (throw (ex-info "Not supported file type" {})))))
 
 (defn- create-post-image [db filename user]
-  (phrag-hdlr/create-root {:name filename :created_by (:id user)
-                           :url (str (env :service-host) ":" (env :service-port)
-                                     "/public/post-image/" filename)}
-                          db :post_image [:id]))
+  (d/create-root {:name filename :created_by (:id user)
+                  :url (str (env :service-host) ":" (env :service-port)
+                            "/public/post-image/" filename)}
+                 db :post_image [:id]))
 
 (defn- update-profile-image [db filename user]
-  (phrag-db/update! db :enduser {:id (:id user)}
-                    {:profile_image_url
-                     (str (env :service-host) ":" (env :service-port)
-                           "/public/profile-image/" filename)}))
+  (d/update! db :enduser {:id (:id user)}
+             {:profile_image_url
+              (str (env :service-host) ":" (env :service-port)
+                   "/public/profile-image/" filename)}))
 
 (defn post-img-handler [db]
   (fn [req]
@@ -37,7 +36,8 @@
       (let [filename (save-image req (str (env :resource-dir) "/post-image"))
             pk-map (create-post-image db filename user)]
         {:status 200
-         :body pk-map}))))
+         :body pk-map})
+      nil)))
 
 (defn profile-img-handler [db]
   (fn [req]
@@ -45,7 +45,8 @@
       (let [filename (save-image req (str (env :resource-dir) "/profile-image"))]
         (update-profile-image db filename user)
         {:status 200
-         :body {:result true}}))))
+         :body {:result true}})
+      nil)))
 
 (defn resource-handler []
   (fn [{:keys [path-params] :as _eq}]
@@ -57,4 +58,5 @@
 (defn auth-user-handler [req]
   (if-let [user (mid/user-or-throw req)]
     {:status 200
-     :body (dissoc user :auth_id)}))
+     :body (dissoc user :auth_id)}
+    nil))

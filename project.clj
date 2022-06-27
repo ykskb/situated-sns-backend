@@ -19,19 +19,15 @@
                  [ring/ring-json "0.5.1"]
                  [ring/ring-jetty-adapter "1.9.3"]
                  [threatgrid/ring-graphql-ui "0.1.3"]
-                 ;; ---- deps for phrag ----
+                 [com.github.ykskb/phrag "0.4.1"]
                  [org.clojure/java.jdbc "0.7.12"]
                  [hikari-cp "2.14.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [com.github.seancorfield/honeysql "2.0.0-rc3"]
-                 [com.walmartlabs/lacinia "0.39-alpha-9"]
                  [ring/ring-core "1.9.5"]
                  [environ "1.2.0"]
-                 [camel-snake-kebab "0.4.2"]
-                 [inflections "0.13.2"]
-                 [superlifter "0.1.3"]]
-  :resource-paths ["resources" "target/resources"
-                   "resources/phrag-0.1.0.jar"]
+                 [metosin/jsonista "0.3.6"]]
+  :resource-paths ["resources" "target/resources"]
   :plugins [[lein-eftest "0.5.9"]
             [lein-cloverage "1.2.2"]
             [lein-environ "1.2.0"] ]
@@ -44,8 +40,8 @@
                         :service-port "3000"
                         :resource-dir ""
                         :firebase-project-id ""
-                        :db-type "postgresql"
-                        :db-host "localhost"
+                        :db-type ""
+                        :db-host ""
                         :db-port "5432"
                         :db-user ""
                         :db-password ""

@@ -1,5 +1,5 @@
 (ns situated-sns.signal
-  (:require [phrag.db :as phrag-db]
+  (:require [situated-sns.db :as d]
             [situated-sns.middleware :as mid]))
 
 ;;; Signals
@@ -17,7 +17,7 @@
   (let [variables (get-in ctx [:req :body-params :variables])
         user (mid/user-or-throw (:req ctx))]
     (when (and (:username variables) (:slug variables))
-      (phrag-db/update! (:db ctx) :enduser {:id (:id user)} {:is_valid true}))
+      (d/update! (:db ctx) :enduser {:id (:id user)} {:is_valid true}))
     args))
 
 (defn- update-count-column! [increment? table-key col-key pk-path-map res ctx]
@@ -26,7 +26,7 @@
                             (assoc m k (get-in variables v)))
                           {} pk-path-map)
         params {col-key [:raw [(name col-key) (if increment? " + 1" " - 1")]]}]
-    (phrag-db/update! (:db ctx) table-key pk-map params)
+    (d/update! (:db ctx) table-key pk-map params)
     res))
 
 (defn- update-created-by [args ctx]
@@ -49,8 +49,8 @@
 (defn- validate-msg-creation [args ctx]
   (let [user (mid/user-or-throw (:req ctx))
         user-id (:id user)
-        chat (first (phrag-db/list-up (:db ctx) :enduser_chat
-                                      {:where [:= :id (:chat_id args)]}))]
+        chat (first (d/list-up (:db ctx) :enduser_chat
+                               {:where [:= :id (:chat_id args)]}))]
     (let [created-by (:created_by chat)
           enduser-id (:enduser_id chat)]
       (if (or (= created-by user-id) (= enduser-id user-id))

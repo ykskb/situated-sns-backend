@@ -2,7 +2,7 @@
   (:require [charmander.core :as charm]
             [clojure.string :as s]
             [environ.core :refer [env]]
-            [phrag.db :as phrag-db]
+            [situated-sns.db :as d]
             [ring.middleware.cors :refer [wrap-cors]]))
 
 ;;; Util
@@ -16,8 +16,7 @@
 ;;; Auth
 
 (defn- user-by-auth-id [db auth-id]
-  (let [user (phrag-db/list-up db :enduser
-                               {:where [:= :auth_id auth-id]})]
+  (let [user (d/list-up db :enduser {:where [:= :auth_id auth-id]})]
     (if (> (count user) 0)
       (first user)
       nil)))
@@ -48,8 +47,7 @@
 ;;; Conversion from slug to user ID in GraphQL variables
 
 (defn- user-id-from-slug [db slug]
-  (let [res (phrag-db/list-up
-             db :enduser {:where [:= :slug slug]})]
+  (let [res (d/list-up db :enduser {:where [:= :slug slug]})]
     (:id (first res))))
 
 (defn- slug-to-user-id [req db]

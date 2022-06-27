@@ -2,7 +2,7 @@
   (:require [integrant.core :as ig]
             [clojure.java.jdbc :as jdbc]
             [environ.core :refer [env]]
-            [phrag.route :as phrag-route]
+            [phrag.route]
             [ring.adapter.jetty :as jetty]
             [hikari-cp.core :as hkr]
             [reitit.ring :as ring]
@@ -47,7 +47,7 @@
                          ;; params/wrap-params
                          muuntaja/format-negotiate-middleware
                          muuntaja/format-response-middleware
-                         exception/exception-middleware
+                         ;exception/exception-middleware
                          muuntaja/format-request-middleware
                          coercion/coerce-response-middleware
                          coercion/coerce-request-middleware
@@ -81,6 +81,7 @@
               :password (env :db-password)
               :currentSchema (env :db-current-schema)
               :stringtype "unspecified"}
+
              ::custom-routes (ig/ref :database.sql/connection)
 
              :database.sql/conn-pool
@@ -93,8 +94,8 @@
               :current-schema (env :db-current-schema)
               :string-type "unspecified"}
              :phrag.route/reitit
-             {:db (ig/ref :database.sql/connection)
-              ;; :signals sig/signals
+             {:db (ig/ref :database.sql/conn-pool)
+              :signals sig/signals
               ;; :default-limit 100
               :middleware [mid/reitit-cors-middleware]}
              ::app {:gql-route (ig/ref :phrag.route/reitit)
