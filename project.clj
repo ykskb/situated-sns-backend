@@ -19,7 +19,7 @@
                  [ring/ring-json "0.5.1"]
                  [ring/ring-jetty-adapter "1.9.3"]
                  [threatgrid/ring-graphql-ui "0.1.3"]
-                 [com.github.ykskb/phrag "0.4.1"]
+                 [com.github.ykskb/phrag "0.4.4"]
                  [org.clojure/java.jdbc "0.7.12"]
                  [hikari-cp "2.14.0"]
                  [org.clojure/tools.logging "0.3.1"]

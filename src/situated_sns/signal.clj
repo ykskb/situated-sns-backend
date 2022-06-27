@@ -40,11 +40,12 @@
 (defn- dissoc-arg-keys [keys-to-dissoc args _ctx]
   (reduce #(dissoc %1 %2) args keys-to-dissoc))
 
-(defn- update-where-auth-or [sql-params ctx]
+(defn- update-where-auth-or [selection ctx]
   (let [user (mid/user-or-throw (:req ctx))
         user-id (:id user)]
-    (update sql-params :where conj
-            [:or [:= :created_by user-id] [:= :enduser_id user-id]])))
+    (update-in selection [:arguments :where :and]
+               conj {:or [{:created_by {:eq user-id}}
+                          {:enduser_id {:eq user-id}}]})))
 
 (defn- validate-msg-creation [args ctx]
   (let [user (mid/user-or-throw (:req ctx))
