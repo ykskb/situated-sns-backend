@@ -6,11 +6,18 @@ Frontend codes (Next JS) sit in the repository [here](https://github.com/ykskb/s
 
 ### Features
 
-- Phrag GraphQL Endpoint with interceptors
-- Custom middleware:
-  - Context update with user info after Firebase auth token validation
-  - GraphQL arg mapping from `slug` to `user_id`
-- Custom routes:
+- **Phrag's GraphQL:** flexible query features to make one request per page easy.
+  - Support for queries with extensive nests.
+  - Support for pagination & filter arguments even on nested objects.
+- **Phrag's Interceptors:** data should be created & accessed with authentication.
+  - Access controls to data per an authenticated user.
+  - Owner update for mutations from an authenticated user's ID.
+  - Count updates on other tables per data creation.
+  - Validation of conditions for user chat record creation.
+- **Custom middleware:** auth contexts.
+  - Context update with user info after validating Firebase auth token.
+  - GraphQL arg mapping from `slug` to `user_id`. 
+- **Custom routes:** endpoints for authentication and file handling.
   - Authed user retrieval
   - Profile image upload
   - Post image upload
